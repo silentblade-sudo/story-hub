@@ -159,6 +159,26 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Сюда вставь конфиг, который ты скопировал из консоли Firebase
+  const firebaseConfig = {
+  apiKey: "AIzaSyC7ntTQhJB8g5bdPnJ6EQ8jQux4LSG9htI",
+  authDomain: "storyhub-project.firebaseapp.com",
+  projectId: "storyhub-project",
+  storageBucket: "storyhub-project.firebasestorage.app",
+  messagingSenderId: "877027277570",
+  appId: "1:877027277570:web:fcdb745e952c28d8a1e01b",
+  measurementId: "G-7ZTS76H5WP"
+};
+
+  // Инициализация
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
     <script src="script.js"></script>
 </body>
 </html>
