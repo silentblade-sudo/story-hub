@@ -10,62 +10,14 @@ let searchQuery = '';
 
 // Загрузка историй из localStorage
 function loadStories() {
-    const saved = localStorage.getItem('storyhub_stories');
-    if (saved) {
-        stories = JSON.parse(saved);
-    } else {
-        // Примеры историй для старта с главами
-        stories = [
-            {
-                id: Date.now() + 1,
-                title: 'Тень прошлого',
-                author: 'Анна К.',
-                genre: 'drama',
-                description: 'Трогательная история о любви и потерях',
-                chapters: [
-                    { title: 'Встреча', content: 'Это была та самая осень, когда всё изменилось...\n\nОна стояла у окна и смотрела на падающие листья. Воспоминания нахлынули волной, унося её в прошлое, где всё было иначе.\n\n"Ты помнишь тот день?" - спросил тихий голос за спиной.\n\nОна обернулась и увидела его. Таким же, каким он был пять лет назад...' },
-                    { title: 'Разлука', content: 'Время шло, но боль не утихала. Каждый день напоминал о том, что они больше не вместе.\n\nОна пыталась забыть, но воспоминания были слишком сильными. Каждая песня, каждый закат возвращал её в тот день, когда они были счастливы.\n\n"Может быть, стоит дать себе второй шанс?" - подумала она.' },
-                    { title: 'Воссоединение', content: 'Судьба свела их снова. Случайная встреча в том самом парке, где они гуляли когда-то.\n\nОн стоял у фонтана и смотрел на воду. Она замедлила шаг, не зная, подойти или уйти.\n\n"Привет," - сказал он, обернувшись. "Я так и знал, что когда-нибудь мы встретимся снова."\n\nЕё сердце забилось чаще. Возможно, это был их второй шанс.' }
-                ],
-                cover: 'gradient1',
-                likes: 2500,
-                date: new Date().toISOString(),
-                isMine: false
-            },
-            {
-                id: Date.now() + 2,
-                title: 'Звёздный странник',
-                author: 'Максим В.',
-                genre: 'sci-fi',
-                description: 'Путешествие к далёким звёздам',
-                chapters: [
-                    { title: 'Старт', content: 'Космический корабль "Астрея" готовился к старту. Капитан Алексей Волков в последний раз проверил все системы.\n\n"До старта 10 секунд," - раздался голос бортового компьютера.\n\nОн посмотрел на Землю через иллюминатор. Зелёно-голубой шар манил и одновременно пугал своей красотой.\n\n"5, 4, 3, 2, 1... Пуск!"\n\nДвигатели взревели, и корабль начал своё путешествие к неизведанным мирам...' },
-                    { title: 'Встреча с неизведанным', content: 'Через месяц полёта они достигли системы Альфа-Центавра. На сканерах появился неизвестный объект.\n\n"Капитан, это не похоже ни на один известный нам корабль," - доложил штурман.\n\nОбъект приближался. Внезапно все коммуникации ожили, и раздался голос, который говорил на чистом русском языке:\n\n"Добро пожаловать, земляне. Мы ждали вас."' }
-                ],
-                cover: 'gradient2',
-                likes: 1800,
-                date: new Date().toISOString(),
-                isMine: false
-            },
-            {
-                id: Date.now() + 3,
-                title: 'Лунная соната',
-                author: 'Елена М.',
-                genre: 'romance',
-                description: 'История любви под луной',
-                chapters: [
-                    { title: 'Знакомство', content: 'Луна светила особенно ярко в ту ночь. Девушка сидела на скамейке в парке и слушала, как кто-то играет на пианино.\n\nМелодия была прекрасна. Она вставала и шла на звук. В старой беседке стоял рояль, а за ним сидел молодой человек.\n\n"Это вы играете?" - спросила она.\n\nОн поднял голову, и их взгляды встретились...' },
-                    { title: 'Первое свидание', content: 'Они встретились на следующий день. Он ждал её у того же рояля.\n\n"Я сочинил эту мелодию специально для тебя," - сказал он.\n\nОна села рядом, и они начали разговаривать. Слова лились рекой, будто они знали друг друга тысячу лет.\n\nЛуна снова освещала их, словно благословляя на этот союз.' }
-                ],
-                cover: 'gradient3',
-                likes: 3200,
-                date: new Date().toISOString(),
-                isMine: false
-            }
-        ];
-        saveStories();
-    }
-    renderStories();
+    // Слушаем Firebase в реальном времени
+    db.collection("stories").orderBy("id", "desc").onSnapshot((snapshot) => {
+        stories = snapshot.docs.map(doc => ({
+            docId: doc.id, // Это нужно для удаления
+            ...doc.data()
+        }));
+        renderStories(); 
+    });
 }
 
 // Сохранение в localStorage
@@ -185,14 +137,9 @@ function updateStory(id, data) {
 
 // Удаление истории
 function deleteStory(id) {
-    if (confirm('Вы уверены, что хотите удалить эту историю?')) {
-        stories = stories.filter(s => s.id !== id);
-        let favorites = JSON.parse(localStorage.getItem('storyhub_favorites') || '[]');
-        favorites = favorites.filter(f => f !== id);
-        localStorage.setItem('storyhub_favorites', JSON.stringify(favorites));
-        saveStories();
-        renderStories();
-        closeReadModal();
+    const story = stories.find(s => s.id === id);
+    if (story && story.docId && confirm('Удалить историю навсегда?')) {
+        db.collection("stories").doc(story.docId).delete();
     }
 }
 
@@ -485,34 +432,43 @@ function initModals() {
         }
     };
 
-    storyForm.onsubmit = (e) => {
+    // Найти этот блок в функции init() и заменить целиком:
+    storyForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const id = document.getElementById('storyId').value;
         
-        // Очищаем пустые главы
-        const validChapters = currentChapters.filter(ch => ch.title.trim() !== '' || ch.content.trim() !== '');
-        if (validChapters.length === 0) {
-            alert('Добавьте хотя бы одну главу!');
-            return;
-        }
-        
+        const storyId = document.getElementById('storyId').value;
         const storyData = {
             title: document.getElementById('storyTitle').value,
             author: document.getElementById('storyAuthor').value,
             genre: document.getElementById('storyGenre').value,
             description: document.getElementById('storyDescription').value,
-            chapters: validChapters,
-            cover: document.getElementById('storyCover').value
+            cover: document.getElementById('storyCover').value,
+            chapters: currentChapters,
+            date: new Date().toISOString(),
+            id: storyId ? parseInt(storyId) : Date.now(),
+            likes: currentReadStory ? currentReadStory.likes : 0,
+            isMine: true
         };
-        
-        if (id) {
-            updateStory(parseInt(id), storyData);
+
+        if (storyId) {
+            // РЕДАКТИРОВАНИЕ: Находим документ по docId и обновляем его
+            const storyToUpdate = stories.find(s => s.id === parseInt(storyId));
+            if (storyToUpdate && storyToUpdate.docId) {
+                db.collection("stories").doc(storyToUpdate.docId).update(storyData)
+                    .then(() => {
+                        console.log("История обновлена");
+                        closeModal(); // Закрываем окно и выходим на главную
+                    });
+            }
         } else {
-            createStory(storyData);
+            // СОЗДАНИЕ НОВОЙ: Просто добавляем в коллекцию
+            db.collection("stories").add(storyData)
+                .then(() => {
+                    console.log("История создана");
+                    closeModal(); // Закрываем окно и выходим на главную
+                });
         }
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    };
+    });
 
     likeBtn.onclick = () => {
         if (currentReadStory) {
