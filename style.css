@@ -1,0 +1,886 @@
+/* ========== БАЗОВЫЕ СТИЛИ ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1e1f20;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* ========== HEADER ========== */
+header {
+    width: 100%;
+    background-color: #1b1818;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4a3b32;
+    white-space: nowrap;
+}
+
+.menu input {
+    flex: 1;
+    max-width: 500px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 60px;
+    background-color: #2d2e2e;
+    transition: all 0.3s ease;
+}
+
+.menu input:focus {
+    outline: none;
+    border-color: #c79a6e;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(199, 154, 110, 0.1);
+}
+
+.user-menu {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.icon-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* ========== ОСНОВНОЙ КОНТЕЙНЕР ========== */
+.app-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 30px;
+    padding: 30px 24px;
+}
+
+/* ========== САЙДБАР ========== */
+.sidebar {
+    background-color: #2b2a2a;
+    width: 280px;
+    border-radius: 16px;
+    padding: 24px 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 32px;
+}
+
+.sidebar-link {
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #4a5568;
+    border-radius: 12px;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.sidebar-link:hover {
+    background-color: #f7fafc;
+    color: #c79a6e;
+}
+
+.sidebar-link.active {
+    background-color: #fff5eb;
+    color: #c79a6e;
+}
+
+.sidebar-footer {
+    border-top: 1px solid #e9ecef;
+    padding-top: 24px;
+}
+
+.genre-section h4 {
+    font-size: 14px;
+    color: #718096;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.genre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    background-color: #f7fafc;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tag:hover {
+    background-color: #fff5eb;
+    color: #c79a6e;
+}
+
+.tag.active {
+    background-color: #c79a6e;
+    color: white;
+}
+
+/* ========== ОСНОВНОЙ КОНТЕНТ ========== */
+.main-content {
+    flex: 1;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #fff5eb 0%, #ffe8d6 100%);
+    border-radius: 24px;
+    padding: 48px 32px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: 36px;
+    color: #4a3b32;
+    margin-bottom: 12px;
+}
+
+.hero-section p {
+    font-size: 18px;
+    color: #718096;
+}
+
+/* ========== СЕТКА ИСТОРИЙ ========== */
+.stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.story-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    position: relative;
+}
+
+.story-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.story-cover {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.story-icon {
+    font-size: 56px;
+    opacity: 0.9;
+}
+
+.story-title {
+    font-size: 18px;
+    font-weight: 600;
+    padding: 16px 16px 8px;
+    color: #2d3748;
+}
+
+.story-author {
+    font-size: 14px;
+    color: #718096;
+    padding: 0 16px;
+}
+
+.story-stats {
+    display: flex;
+    gap: 16px;
+    padding: 12px 16px 16px;
+    font-size: 13px;
+    color: #a0aec0;
+}
+
+.story-chapters {
+    font-size: 12px;
+    color: #c79a6e;
+    padding: 0 16px 12px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 18px;
+    color: #718096;
+    background: white;
+    border-radius: 24px;
+    grid-column: 1 / -1;
+}
+
+.create-btn {
+    background: linear-gradient(135deg, #c79a6e 0%, #b8845a 100%);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    border-radius: 40px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s;
+}
+
+.create-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ========== РЕДАКТОР ГЛАВ ========== */
+.chapters-editor {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.chapters-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.chapter-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.chapter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.chapter-title-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-right: 12px;
+}
+
+.chapter-title-input:focus {
+    outline: none;
+    border-color: #c79a6e;
+}
+
+.delete-chapter-btn {
+    background: rgba(255, 0, 0, 0.3);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.delete-chapter-btn:hover {
+    background: rgba(255, 0, 0, 0.6);
+}
+
+.chapter-content-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.chapter-content-input:focus {
+    outline: none;
+    border-color: #c79a6e;
+}
+
+.add-chapter-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.add-chapter-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #c79a6e;
+}
+
+/* ========== ПОЛНОЭКРАННЫЕ МОДАЛЬНЫЕ ОКНА ========== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.fullscreen-modal {
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(5px);
+}
+
+.fullscreen-modal .modal-content {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    animation: fadeInScale 0.3s ease;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fullscreen-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.fullscreen-form {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 40px;
+}
+
+.form-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    padding: 0;
+}
+
+.fullscreen-form .form-group {
+    margin-bottom: 24px;
+    padding: 0;
+}
+
+.fullscreen-form label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #e2e8f0;
+}
+
+.fullscreen-form input,
+.fullscreen-form select,
+.fullscreen-form textarea {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    width: 100%;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.fullscreen-form input:focus,
+.fullscreen-form select:focus,
+.fullscreen-form textarea:focus {
+    outline: none;
+    border-color: #c79a6e;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.fullscreen-form input::placeholder,
+.fullscreen-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.fullscreen-form select option {
+    background: #1a1a2e;
+    color: white;
+}
+
+.fullscreen-modal .modal-header {
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fullscreen-modal .modal-header h2 {
+    color: white;
+    font-size: 28px;
+    margin: 0;
+}
+
+.chapter-nav-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.chapter-nav-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 40px;
+    transition: all 0.2s;
+}
+
+.chapter-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+#chapterIndicator {
+    color: white;
+    font-size: 16px;
+    min-width: 100px;
+    text-align: center;
+}
+
+.fullscreen-modal .close,
+.fullscreen-modal .close-read {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 40px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.fullscreen-modal .close:hover,
+.fullscreen-modal .close-read:hover {
+    color: #c79a6e;
+}
+
+.fullscreen-modal .modal-buttons {
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 40px;
+    margin-top: 0;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.fullscreen-modal .cancel-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.fullscreen-modal .cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #c79a6e;
+}
+
+.fullscreen-modal .submit-btn {
+    background: linear-gradient(135deg, #c79a6e 0%, #b8845a 100%);
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.fullscreen-modal .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(199, 154, 110, 0.3);
+}
+
+/* Стили для полноэкранного чтения */
+.read-fullscreen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.read-content-full {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.read-meta-full {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.read-info {
+    display: flex;
+    gap: 24px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.read-stats-full {
+    display: flex;
+    gap: 16px;
+}
+
+.like-btn, .favorite-btn {
+    padding: 8px 16px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.like-btn {
+    background: #fff5eb;
+    border: 1px solid #ffe0cc;
+    color: #e53e3e;
+}
+
+.like-btn:hover {
+    transform: scale(1.05);
+}
+
+.favorite-btn {
+    background: white;
+    border: 1px solid #e9ecef;
+    color: #4a5568;
+}
+
+.favorite-btn.favorited {
+    background: #fef5e7;
+    border-color: #fbd38d;
+    color: #d69e2e;
+}
+
+.read-stats-full .like-btn,
+.read-stats-full .favorite-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.read-text-full {
+    padding: 50px 60px;
+    line-height: 1.9;
+    font-size: 18px;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.chapter-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 30px 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.nav-chapter-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.nav-chapter-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.nav-chapter-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.chapter-select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 150px;
+}
+
+.chapter-select option {
+    background: #1a1a2e;
+    color: white;
+}
+
+.read-actions-full {
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 40px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.edit-story-btn, .delete-story-btn {
+    padding: 8px 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.edit-story-btn {
+    background: #4299e1;
+    color: white;
+    border: none;
+}
+
+.edit-story-btn:hover {
+    transform: scale(1.05);
+}
+
+.delete-story-btn {
+    background: white;
+    border: 2px solid #fc8181;
+    color: #e53e3e;
+}
+
+.delete-story-btn:hover {
+    background: #e53e3e;
+    color: white;
+}
+
+.read-actions-full .edit-story-btn,
+.read-actions-full .delete-story-btn {
+    padding: 12px 28px;
+    font-size: 16px;
+}
+
+/* Карточка своей истории */
+.story-card.my-story .story-cover::after {
+    content: "📝";
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.delete-story-card {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    color: white;
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.story-card:hover .delete-story-card {
+    opacity: 1;
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 768px) {
+    .menu {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .menu input {
+        order: 3;
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .app-container {
+        flex-direction: column;
+        padding: 20px 16px;
+    }
+    
+    .sidebar {
+        width: 100%;
+        position: static;
+    }
+    
+    .hero-section h1 {
+        font-size: 24px;
+    }
+    
+    .hero-section p {
+        font-size: 16px;
+    }
+    
+    .stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+    }
+    
+    .fullscreen-form {
+        padding: 20px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .read-meta-full {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .read-text-full {
+        padding: 30px 25px;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+    
+    .fullscreen-modal .modal-header {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+    
+    .fullscreen-modal .modal-header h2 {
+        font-size: 20px;
+    }
+    
+    .read-info {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .chapter-navigation {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .chapter-nav-header {
+        order: 1;
+    }
+    
+    .fullscreen-modal .modal-buttons {
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 18px;
+    }
+    
+    .hero-section {
+        padding: 32px 20px;
+    }
+    
+    .hero-section h1 {
+        font-size: 20px;
+    }
+    
+    .stories-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>StoryHub - твои истории</title>
+</head>
+<body>
+    <header class="container">
+        <nav class="menu">
+            <div class="logo">📚 StoryHub</div>
+            <input type="text" id="searchInput" placeholder="Поиск историй...">
+            <div class="user-menu">
+                <button class="icon-btn" id="addStoryBtn" title="Добавить историю">✏️</button>
+                <button class="icon-btn" id="profileBtn" title="Профиль">👤</button>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="app-container">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-filter="all">🏠 Все истории</a>
+                <a href="#" class="sidebar-link" data-filter="my">📖 Мои истории</a>
+                <a href="#" class="sidebar-link" data-filter="popular">🔥 Популярное</a>
+                <a href="#" class="sidebar-link" data-filter="new">✨ Новинки</a>
+                <a href="#" class="sidebar-link" data-filter="favorites">❤️ Избранное</a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="genre-section">
+                    <h4>Жанры</h4>
+                    <div class="genre-tags" id="genreTags">
+                        <span class="tag" data-genre="romance">Романтика</span>
+                        <span class="tag" data-genre="fantasy">Фэнтези</span>
+                        <span class="tag" data-genre="drama">Драма</span>
+                        <span class="tag" data-genre="adventure">Приключения</span>
+                        <span class="tag" data-genre="horror">Ужасы</span>
+                        <span class="tag" data-genre="sci-fi">Научная фантастика</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="hero-section">
+                <h1>Истории, которые вдохновляют</h1>
+                <p>Откройте мир удивительных рассказов от талантливых авторов</p>
+                <button class="create-btn" id="createStoryHeroBtn">➕ Создать свою историю</button>
+            </div>
+            
+            <div class="stories-grid" id="storiesGrid">
+                <!-- Истории будут загружаться сюда -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Полноэкранное модальное окно для создания/редактирования истории с главами -->
+    <div id="storyModal" class="modal fullscreen-modal">
+        <div class="modal-content fullscreen-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Создать новую историю</h2>
+                <span class="close">&times;</span>
+            </div>
+            <form id="storyForm" class="fullscreen-form">
+                <input type="hidden" id="storyId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="storyTitle">Название истории *</label>
+                        <input type="text" id="storyTitle" required placeholder="Например: Тень прошлого">
+                    </div>
+                    <div class="form-group">
+                        <label for="storyAuthor">Ваше имя *</label>
+                        <input type="text" id="storyAuthor" required placeholder="Автор">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="storyGenre">Жанр *</label>
+                        <select id="storyGenre" required>
+                            <option value="romance">Романтика</option>
+                            <option value="fantasy">Фэнтези</option>
+                            <option value="drama">Драма</option>
+                            <option value="adventure">Приключения</option>
+                            <option value="horror">Ужасы</option>
+                            <option value="sci-fi">Научная фантастика</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="storyCover">Цвет обложки</label>
+                        <select id="storyCover">
+                            <option value="gradient1">Фиолетовый градиент</option>
+                            <option value="gradient2">Розовый градиент</option>
+                            <option value="gradient3">Голубой градиент</option>
+                            <option value="gradient4">Жёлтый градиент</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="storyDescription">Описание истории</label>
+                    <textarea id="storyDescription" rows="3" placeholder="Краткое описание вашей истории..."></textarea>
+                </div>
+                
+                <!-- Редактор глав -->
+                <div class="form-group">
+                    <label>Главы истории</label>
+                    <div id="chaptersEditor" class="chapters-editor">
+                        <div id="chaptersList" class="chapters-list"></div>
+                        <button type="button" id="addChapterBtn" class="add-chapter-btn">+ Добавить главу</button>
+                    </div>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" id="cancelModalBtn">Отмена</button>
+                    <button type="submit" class="submit-btn">Сохранить историю</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Полноэкранное модальное окно для чтения истории с главами -->
+    <div id="readModal" class="modal fullscreen-modal">
+        <div class="modal-content fullscreen-content read-fullscreen">
+            <div class="modal-header">
+                <h2 id="readTitle"></h2>
+                <div class="chapter-nav-header">
+                    <button class="chapter-nav-btn" id="prevChapterBtn" title="Предыдущая глава">◀</button>
+                    <span id="chapterIndicator">Глава 1</span>
+                    <button class="chapter-nav-btn" id="nextChapterBtn" title="Следующая глава">▶</button>
+                </div>
+                <span class="close-read">&times;</span>
+            </div>
+            <div class="read-content-full">
+                <div class="read-meta-full">
+                    <div class="read-info">
+                        <span id="readAuthor"></span>
+                        <span id="readGenre"></span>
+                        <span id="readDate"></span>
+                    </div>
+                    <div class="read-stats-full">
+                        <button class="like-btn" id="likeBtn">❤️ <span id="likeCount">0</span></button>
+                        <button class="favorite-btn" id="favoriteBtn">⭐ В избранное</button>
+                    </div>
+                </div>
+                <div class="read-text-full" id="readContent"></div>
+                <div class="chapter-navigation">
+                    <button class="nav-chapter-btn prev" id="prevChapterBottomBtn">◀ Предыдущая глава</button>
+                    <div class="chapter-selector">
+                        <select id="chapterSelect" class="chapter-select"></select>
+                    </div>
+                    <button class="nav-chapter-btn next" id="nextChapterBottomBtn">Следующая глава ▶</button>
+                </div>
+                <div class="read-actions-full">
+                    <button class="edit-story-btn" id="editFromReadBtn">✏️ Редактировать</button>
+                    <button class="delete-story-btn" id="deleteFromReadBtn">🗑️ Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
