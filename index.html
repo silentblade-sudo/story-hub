@@ -2,16 +2,26 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="style.css">
     <title>StoryHub - твои истории</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
 </head>
 <body>
     <header class="container">
         <nav class="menu">
             <div class="logo">📚 StoryHub</div>
-            <input type="text" id="searchInput" placeholder="Поиск историй...">
+            <input type="text" id="searchInput" placeholder="Поиск историй..." autocomplete="off">
             <div class="user-menu">
+                <div id="authButtons">
+                    <button class="icon-btn" id="loginBtn" title="Войти">🔐</button>
+                    <button class="icon-btn" id="registerBtn" title="Регистрация">📝</button>
+                </div>
+                <div id="userInfo" style="display: none;">
+                    <span id="userName" class="user-name"></span>
+                    <button class="icon-btn" id="logoutBtn" title="Выйти">🚪</button>
+                </div>
                 <button class="icon-btn" id="addStoryBtn" title="Добавить историю">✏️</button>
                 <button class="icon-btn" id="profileBtn" title="Профиль">👤</button>
             </div>
@@ -32,12 +42,12 @@
                 <div class="genre-section">
                     <h4>Жанры</h4>
                     <div class="genre-tags" id="genreTags">
-                        <span class="tag" data-genre="romance">Романтика</span>
-                        <span class="tag" data-genre="fantasy">Фэнтези</span>
-                        <span class="tag" data-genre="drama">Драма</span>
-                        <span class="tag" data-genre="adventure">Приключения</span>
-                        <span class="tag" data-genre="horror">Ужасы</span>
-                        <span class="tag" data-genre="sci-fi">Научная фантастика</span>
+                        <span class="tag" data-genre="romance">💕 Романтика</span>
+                        <span class="tag" data-genre="fantasy">🐉 Фэнтези</span>
+                        <span class="tag" data-genre="drama">🎭 Драма</span>
+                        <span class="tag" data-genre="adventure">🗺️ Приключения</span>
+                        <span class="tag" data-genre="horror">👻 Ужасы</span>
+                        <span class="tag" data-genre="sci-fi">🚀 Научная фантастика</span>
                     </div>
                 </div>
             </div>
@@ -53,10 +63,72 @@
             <div class="stories-grid" id="storiesGrid">
                 <!-- Истории будут загружаться сюда -->
             </div>
+            
+            <!-- Индикатор загрузки -->
+            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                <div class="spinner"></div>
+                <p>Загрузка историй...</p>
+            </div>
         </main>
     </div>
 
-    <!-- Полноэкранное модальное окно для создания/редактирования истории с главами -->
+    <!-- Модальное окно для входа -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content small-modal">
+            <div class="modal-header">
+                <h2>Вход в StoryHub</h2>
+                <span class="close-login">&times;</span>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" required placeholder="минимум 6 символов">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" id="cancelLoginBtn">Отмена</button>
+                    <button type="submit" class="submit-btn">Войти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно для регистрации -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content small-modal">
+            <div class="modal-header">
+                <h2>Регистрация</h2>
+                <span class="close-register">&times;</span>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regName">Имя пользователя</label>
+                    <input type="text" id="regName" required placeholder="Как вас называть?">
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Пароль</label>
+                    <input type="password" id="regPassword" required placeholder="минимум 6 символов">
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword">Подтвердите пароль</label>
+                    <input type="password" id="regConfirmPassword" required placeholder="повторите пароль">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" id="cancelRegisterBtn">Отмена</button>
+                    <button type="submit" class="submit-btn">Зарегистрироваться</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Полноэкранное модальное окно для создания/редактирования истории -->
     <div id="storyModal" class="modal fullscreen-modal">
         <div class="modal-content fullscreen-content">
             <div class="modal-header">
@@ -65,26 +137,29 @@
             </div>
             <form id="storyForm" class="fullscreen-form">
                 <input type="hidden" id="storyId">
+                <input type="hidden" id="storyDocId">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="storyTitle">Название истории *</label>
                         <input type="text" id="storyTitle" required placeholder="Например: Тень прошлого">
+                        <small class="error-message" id="titleError"></small>
                     </div>
                     <div class="form-group">
                         <label for="storyAuthor">Ваше имя *</label>
                         <input type="text" id="storyAuthor" required placeholder="Автор">
+                        <small class="error-message" id="authorError"></small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="storyGenre">Жанр *</label>
                         <select id="storyGenre" required>
-                            <option value="romance">Романтика</option>
-                            <option value="fantasy">Фэнтези</option>
-                            <option value="drama">Драма</option>
-                            <option value="adventure">Приключения</option>
-                            <option value="horror">Ужасы</option>
-                            <option value="sci-fi">Научная фантастика</option>
+                            <option value="romance">💕 Романтика</option>
+                            <option value="fantasy">🐉 Фэнтези</option>
+                            <option value="drama">🎭 Драма</option>
+                            <option value="adventure">🗺️ Приключения</option>
+                            <option value="horror">👻 Ужасы</option>
+                            <option value="sci-fi">🚀 Научная фантастика</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -104,7 +179,7 @@
                 
                 <!-- Редактор глав -->
                 <div class="form-group">
-                    <label>Главы истории</label>
+                    <label>Главы истории * <small>(минимум 1 глава, каждая минимум 10 символов)</small></label>
                     <div id="chaptersEditor" class="chapters-editor">
                         <div id="chaptersList" class="chapters-list"></div>
                         <button type="button" id="addChapterBtn" class="add-chapter-btn">+ Добавить главу</button>
@@ -119,7 +194,7 @@
         </div>
     </div>
 
-    <!-- Полноэкранное модальное окно для чтения истории с главами -->
+    <!-- Полноэкранное модальное окно для чтения истории -->
     <div id="readModal" class="modal fullscreen-modal">
         <div class="modal-content fullscreen-content read-fullscreen">
             <div class="modal-header">
@@ -159,25 +234,30 @@
         </div>
     </div>
 
+    <!-- Toast уведомления -->
+    <div id="toastContainer" class="toast-container"></div>
+
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
-<script>
-  // Сюда вставь конфиг, который ты скопировал из консоли Firebase
-  const firebaseConfig = {
-  apiKey: "AIzaSyC7ntTQhJB8g5bdPnJ6EQ8jQux4LSG9htI",
-  authDomain: "storyhub-project.firebaseapp.com",
-  projectId: "storyhub-project",
-  storageBucket: "storyhub-project.firebasestorage.app",
-  messagingSenderId: "877027277570",
-  appId: "1:877027277570:web:fcdb745e952c28d8a1e01b",
-  measurementId: "G-7ZTS76H5WP"
-};
+    <script>
+        // Firebase конфигурация
+        const firebaseConfig = {
+            apiKey: "AIzaSyC7ntTQhJB8g5bdPnJ6EQ8jQux4LSG9htI",
+            authDomain: "storyhub-project.firebaseapp.com",
+            projectId: "storyhub-project",
+            storageBucket: "storyhub-project.firebasestorage.app",
+            messagingSenderId: "877027277570",
+            appId: "1:877027277570:web:fcdb745e952c28d8a1e01b",
+            measurementId: "G-7ZTS76H5WP"
+        };
 
-  // Инициализация
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
+        // Инициализация Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+    </script>
 
     <script src="script.js"></script>
 </body>
